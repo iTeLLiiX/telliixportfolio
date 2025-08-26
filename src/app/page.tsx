@@ -191,19 +191,29 @@ export default function Home() {
         </div>
       </div>
       
-      {/* Media Embeds */}
+      {/* TeLLiiX Spotify Playlist */}
       <div className="w-full bg-style-simple overflow-hidden">
-        <iframe className="w-full" src="https://open.spotify.com/embed/track/4qVkWT6l07ZwUUNxWoZZbD" height="80" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+        <iframe 
+          className="w-full" 
+          src="https://open.spotify.com/embed/playlist/1ToOv8aJGcnR51fnsGv8VO?utm_source=generator" 
+          height="352" 
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture; web-share"
+          title="TeLLiiX Playlist"
+        ></iframe>
       </div>
       
+      {/* SoundCloud Player */}
       <iframe className="w-full bg-style-simple" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1481594152&amp;visual=true" height="150" allow="autoplay"></iframe>
       
+      {/* YouTube Video */}
       <iframe className="aspect-video w-full bg-style-simple" src="https://www.youtube.com/embed/J7imQq-4pgA" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; fullscreen; picture-in-picture; web-share" allowFullScreen></iframe>
       
+      {/* GIF Embed */}
       <a target="_blank" draggable="false" className="block" href="https://r2.fakecrime.bio/pictures/608ff1dd-adb9-444c-87e5-0a7a73a0d9af.gif">
         <img alt="Embed" draggable="false" loading="lazy" width="1000" height="500" decoding="async" className="bg-style-simple w-full" style={{color: 'transparent'}} src="https://r2.fakecrime.bio/pictures/608ff1dd-adb9-444c-87e5-0a7a73a0d9af.gif"/>
       </a>
       
+      {/* Custom Audio Player */}
       <div className="flex items-center justify-center gap-5 p-3 bg-style-simple">
         <img alt="Cover" draggable="false" loading="lazy" width="78" height="78" decoding="async" className="border-color avatar-radius border-width aspect-square size-16 sm:size-20" style={{color: 'transparent'}} src="https://r2.fakecrime.bio/tracks/covers/e4295c13-1fe4-4724-962f-4a209957c850.webp"/>
         <div role="group" tabIndex={0} aria-label="Audio player" className="rhap_container rhap_loop--on rhap_play-status--paused">
