@@ -1,12 +1,14 @@
 'use client'
 
 import { useEffect, useState, useRef } from 'react'
+import AudioPlayer from 'react-h5-audio-player'
+import 'react-h5-audio-player/lib/styles.css'
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
   const [hasInteracted, setHasInteracted] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
-  const audioRef = useRef<HTMLAudioElement>(null)
+  const audioRef = useRef<any>(null)
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -19,14 +21,14 @@ export default function Home() {
   const handleUserInteraction = () => {
     if (!hasInteracted && audioRef.current) {
       setHasInteracted(true)
-      audioRef.current.play()
+      // Try to play the audio
+      audioRef.current.audio.current.play()
         .then(() => {
           setIsPlaying(true)
           console.log('🎵 Audio started playing automatically!')
         })
-        .catch(e => {
+        .catch((e: any) => {
           console.log('❌ Auto-play prevented:', e)
-          // Fallback: show play button
         })
     }
   }
@@ -44,10 +46,10 @@ export default function Home() {
   const handlePlayPause = () => {
     if (audioRef.current) {
       if (isPlaying) {
-        audioRef.current.pause()
+        audioRef.current.audio.current.pause()
         setIsPlaying(false)
       } else {
-        audioRef.current.play()
+        audioRef.current.audio.current.play()
         setIsPlaying(true)
       }
     }
@@ -266,70 +268,28 @@ export default function Home() {
         <img alt="Embed" draggable="false" loading="lazy" width="1000" height="500" decoding="async" className="bg-style-simple w-full" style={{color: 'transparent'}} src="https://r2.fakecrime.bio/pictures/608ff1dd-adb9-444c-87e5-0a7a73a0d9af.gif"/>
       </a>
       
-      {/* Custom Audio Player with Auto-Play */}
+      {/* Working Audio Player */}
       <div className="flex items-center justify-center gap-5 p-3 bg-style-simple">
         <img alt="Cover" draggable="false" loading="lazy" width="78" height="78" decoding="async" className="border-color avatar-radius border-width aspect-square size-16 sm:size-20" style={{color: 'transparent'}} src="https://r2.fakecrime.bio/tracks/covers/e4295c13-1fe4-4724-962f-4a209957c850.webp"/>
-        <div role="group" tabIndex={0} aria-label="Audio player" className="rhap_container rhap_loop--on rhap_play-status--paused">
-          <audio 
+        <div className="flex-1">
+          <AudioPlayer
             ref={audioRef}
-            src="https://r2.fakecrime.bio/tracks/audios/8f77b9b7-0af4-4907-b4ce-b628ae1acafc.mp4" 
-            loop 
-            preload="none"
+            src="https://r2.fakecrime.bio/tracks/audios/8f77b9b7-0af4-4907-b4ce-b628ae1acafc.mp4"
             onPlay={() => setIsPlaying(true)}
             onPause={() => setIsPlaying(false)}
             onEnded={() => setIsPlaying(false)}
-            onError={(e) => console.log('Audio error:', e)}
-          ></audio>
-          <div className="rhap_header">
-            <div className="line-clamp-1 break-all flex items-center gap-2">
-              <span>VØJ x Asketa x Daedra - !Sorry</span>
-              {isPlaying && <span className="text-green-400 animate-pulse">▶️</span>}
-            </div>
-          </div>
-          <div className="rhap_main rhap_stacked">
-            <div className="rhap_progress-section">
-              <div id="rhap_current-time" className="rhap_time rhap_current-time">00:00</div>
-              <div className="rhap_progress-container" aria-label="Audio progress control" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={0} tabIndex={0}>
-                <div className="rhap_progress-bar rhap_progress-bar-show-download">
-                  <div className="rhap_progress-indicator" style={{left: '0%'}}></div>
-                  <div className="rhap_progress-filled" style={{width: '0%'}}></div>
-                </div>
+            showJumpControls={false}
+            header={
+              <div className="text-white text-sm font-medium">
+                VØJ x Asketa x Daedra - !Sorry
+                {isPlaying && <span className="ml-2 text-green-400 animate-pulse">▶️</span>}
               </div>
-              <div className="rhap_time rhap_total-time">00:00</div>
-            </div>
-            <div className="rhap_controls-section">
-              <div className="rhap_additional-controls"></div>
-              <div className="rhap_main-controls">
-                <button 
-                  aria-label={isPlaying ? "Pause" : "Play"} 
-                  className="rhap_button-clear rhap_main-controls-button rhap_play-pause-button" 
-                  type="button"
-                  onClick={handlePlayPause}
-                >
-                  {isPlaying ? (
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" className="size-5 fill-theme drop-shadow-theme duration-300 hover:scale-105 hover:brightness-105">
-                      <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"></path>
-                    </svg>
-                  ) : (
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" className="size-5 fill-theme drop-shadow-theme duration-300 hover:scale-105 hover:brightness-105">
-                      <path d="M21.4 9.4a3 3 0 0 1 0 5.2l-12.8 7C6.6 22.7 4 21.3 4 19V5c0-2.3 2.5-3.7 4.6-2.6z"></path>
-                    </svg>
-                  )}
-                </button>
-              </div>
-              <div className="rhap_volume-controls">
-                <div className="rhap_volume-container">
-                  <button aria-label="Mute" type="button" className="rhap_button-clear rhap_volume-button"></button>
-                  <div role="progressbar" aria-label="Volume control" aria-valuemin={0} aria-valuemax={100} aria-valuenow={10} tabIndex={0} className="rhap_volume-bar-area">
-                    <div className="rhap_volume-bar">
-                      <div className="rhap_volume-indicator" style={{left: '10.00%', transitionDuration: '0s'}}></div>
-                      <div className="rhap_volume-filled" style={{width: '10.00%'}}></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+            }
+            style={{
+              backgroundColor: 'transparent',
+              color: 'white',
+            }}
+          />
         </div>
       </div>
     </main>
