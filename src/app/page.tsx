@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
@@ -279,7 +278,7 @@ export default function Home() {
           <div className="rhap_main rhap_stacked">
             <div className="rhap_progress-section">
               <div id="rhap_current-time" className="rhap_time rhap_current-time">00:00</div>
-              <div className="rhap_progress-container" aria-label="Audio progress control" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabIndex={0}>
+              <div className="rhap_progress-container" aria-label="Audio progress control" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={0} tabIndex={0}>
                 <div className="rhap_progress-bar rhap_progress-bar-show-download">
                   <div className="rhap_progress-indicator" style={{ left: '0%' }}></div>
                   <div className="rhap_progress-filled" style={{ width: '0%' }}></div>
@@ -299,7 +298,7 @@ export default function Home() {
               <div className="rhap_volume-controls">
                 <div className="rhap_volume-container">
                   <button aria-label="Mute" type="button" className="rhap_button-clear rhap_volume-button"></button>
-                  <div role="progressbar" aria-label="Volume control" aria-valuemin="0" aria-valuemax="100" aria-valuenow="NaN" tabIndex={0} className="rhap_volume-bar-area">
+                  <div role="progressbar" aria-label="Volume control" aria-valuemin={0} aria-valuemax={100} aria-valuenow={10} tabIndex={0} className="rhap_volume-bar-area">
                     <div className="rhap_volume-bar">
                       <div className="rhap_volume-indicator" style={{ left: '10.00%', transitionDuration: '0s' }}></div>
                       <div className="rhap_volume-filled" style={{ width: '10.00%' }}></div>
