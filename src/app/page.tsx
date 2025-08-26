@@ -17,6 +17,22 @@ export default function Home() {
     return () => clearTimeout(timer)
   }, [])
 
+  // Try to start music immediately when page loads
+  useEffect(() => {
+    if (!isLoading && audioRef.current) {
+      // Try to play immediately
+      audioRef.current.audio.current.play()
+        .then(() => {
+          setIsPlaying(true)
+          setHasInteracted(true)
+          console.log('🎵 Audio started immediately!')
+        })
+        .catch((e: any) => {
+          console.log('❌ Auto-play blocked, waiting for user interaction')
+        })
+    }
+  }, [isLoading])
+
   // Handle user interaction to enable audio
   const handleUserInteraction = () => {
     if (!hasInteracted && audioRef.current) {
@@ -127,12 +143,19 @@ export default function Home() {
         autoPlay
       />
       
-      {/* Auto-play notification */}
+      {/* Prominent Auto-play notification */}
       {!hasInteracted && !isLoading && (
-        <div className="fixed top-4 right-4 z-50 bg-black/80 text-white px-4 py-2 rounded-lg border border-purple-500">
-          <div className="flex items-center gap-2">
-            <span className="text-purple-400">🎵</span>
-            <span className="text-sm">Click anywhere to start music!</span>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
+          <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-6 rounded-2xl border-2 border-white/20 shadow-2xl animate-pulse">
+            <div className="flex items-center gap-4 text-center">
+              <div className="text-4xl">🎵</div>
+              <div>
+                <div className="text-xl font-bold mb-2">MUSIC READY!</div>
+                <div className="text-lg">Click anywhere to start the music!</div>
+                <div className="text-sm opacity-80 mt-2">Music will start immediately</div>
+              </div>
+              <div className="text-4xl">🎵</div>
+            </div>
           </div>
         </div>
       )}
