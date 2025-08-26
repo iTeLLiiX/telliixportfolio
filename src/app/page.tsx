@@ -1,9 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
+  const [hasInteracted, setHasInteracted] = useState(false)
+  const audioRef = useRef<HTMLAudioElement>(null)
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -11,6 +13,23 @@ export default function Home() {
     }, 2000)
     return () => clearTimeout(timer)
   }, [])
+
+  // Handle user interaction to enable audio
+  const handleUserInteraction = () => {
+    if (!hasInteracted && audioRef.current) {
+      setHasInteracted(true)
+      audioRef.current.play().catch(e => console.log('Auto-play prevented:', e))
+    }
+  }
+
+  // Add click listener to the entire page
+  useEffect(() => {
+    if (!isLoading) {
+      const handleClick = () => handleUserInteraction()
+      document.addEventListener('click', handleClick, { once: true })
+      return () => document.removeEventListener('click', handleClick)
+    }
+  }, [isLoading, hasInteracted])
 
   if (isLoading) {
     return (
@@ -48,27 +67,29 @@ export default function Home() {
   }
 
   return (
-    <main style={{
-      fontFamily: 'Array',
-      '--theme-color': '#ffffff',
-      '--icon-color': '#F97316',
-      '--primary-text-color': '#FFFFFF',
-      '--secondary-text-color': '#A8A29E',
-      '--background-color': '#090909',
-      '--box-color': '#00000000',
-      '--box-width': '669px',
-      '--box-spacing': '35px',
-      '--box-spacing-reverse': '-35px',
-      '--box-blur': '0px',
-      '--box-radius': '10px',
-      '--box-shadow-color': '#fffafa50',
-      '--border-width': '3px',
-      '--border-color': '#78726D20',
-      '--border-style': 'Double',
-      '--page-enter-animation': 'None',
-      '--avatar-radius': '50px',
-      '--reveal-screen-blur': '16px'
-    } as React.CSSProperties}>
+    <main 
+      onClick={handleUserInteraction}
+      style={{
+        fontFamily: 'Array',
+        '--theme-color': '#ffffff',
+        '--icon-color': '#F97316',
+        '--primary-text-color': '#FFFFFF',
+        '--secondary-text-color': '#A8A29E',
+        '--background-color': '#090909',
+        '--box-color': '#00000000',
+        '--box-width': '669px',
+        '--box-spacing': '35px',
+        '--box-spacing-reverse': '-35px',
+        '--box-blur': '0px',
+        '--box-radius': '10px',
+        '--box-shadow-color': '#fffafa50',
+        '--border-width': '3px',
+        '--border-color': '#78726D20',
+        '--border-style': 'Double',
+        '--page-enter-animation': 'None',
+        '--avatar-radius': '50px',
+        '--reveal-screen-blur': '16px'
+      } as React.CSSProperties}>
       <video 
         loop 
         muted 
@@ -213,11 +234,18 @@ export default function Home() {
         <img alt="Embed" draggable="false" loading="lazy" width="1000" height="500" decoding="async" className="bg-style-simple w-full" style={{color: 'transparent'}} src="https://r2.fakecrime.bio/pictures/608ff1dd-adb9-444c-87e5-0a7a73a0d9af.gif"/>
       </a>
       
-      {/* Custom Audio Player */}
+      {/* Custom Audio Player with Auto-Play */}
       <div className="flex items-center justify-center gap-5 p-3 bg-style-simple">
         <img alt="Cover" draggable="false" loading="lazy" width="78" height="78" decoding="async" className="border-color avatar-radius border-width aspect-square size-16 sm:size-20" style={{color: 'transparent'}} src="https://r2.fakecrime.bio/tracks/covers/e4295c13-1fe4-4724-962f-4a209957c850.webp"/>
         <div role="group" tabIndex={0} aria-label="Audio player" className="rhap_container rhap_loop--on rhap_play-status--paused">
-          <audio src="https://r2.fakecrime.bio/tracks/audios/8f77b9b7-0af4-4907-b4ce-b628ae1acafc.mp4" loop preload="none"></audio>
+          <audio 
+            ref={audioRef}
+            src="https://r2.fakecrime.bio/tracks/audios/8f77b9b7-0af4-4907-b4ce-b628ae1acafc.mp4" 
+            loop 
+            preload="none"
+            onPlay={() => console.log('Audio started playing!')}
+            onError={(e) => console.log('Audio error:', e)}
+          ></audio>
           <div className="rhap_header">
             <div className="line-clamp-1 break-all">VØJ x Asketa x Daedra - !Sorry</div>
           </div>
@@ -235,7 +263,12 @@ export default function Home() {
             <div className="rhap_controls-section">
               <div className="rhap_additional-controls"></div>
               <div className="rhap_main-controls">
-                <button aria-label="Play" className="rhap_button-clear rhap_main-controls-button rhap_play-pause-button" type="button">
+                <button 
+                  aria-label="Play" 
+                  className="rhap_button-clear rhap_main-controls-button rhap_play-pause-button" 
+                  type="button"
+                  onClick={handleUserInteraction}
+                >
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" className="size-5 fill-theme drop-shadow-theme duration-300 hover:scale-105 hover:brightness-105">
                     <path d="M21.4 9.4a3 3 0 0 1 0 5.2l-12.8 7C6.6 22.7 4 21.3 4 19V5c0-2.3 2.5-3.7 4.6-2.6z"></path>
                   </svg>
