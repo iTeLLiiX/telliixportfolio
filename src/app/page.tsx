@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from 'react'
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
   const [hasInteracted, setHasInteracted] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(false)
   const audioRef = useRef<HTMLAudioElement>(null)
 
   useEffect(() => {
@@ -18,7 +19,15 @@ export default function Home() {
   const handleUserInteraction = () => {
     if (!hasInteracted && audioRef.current) {
       setHasInteracted(true)
-      audioRef.current.play().catch(e => console.log('Auto-play prevented:', e))
+      audioRef.current.play()
+        .then(() => {
+          setIsPlaying(true)
+          console.log('🎵 Audio started playing automatically!')
+        })
+        .catch(e => {
+          console.log('❌ Auto-play prevented:', e)
+          // Fallback: show play button
+        })
     }
   }
 
@@ -30,6 +39,19 @@ export default function Home() {
       return () => document.removeEventListener('click', handleClick)
     }
   }, [isLoading, hasInteracted])
+
+  // Handle play/pause button click
+  const handlePlayPause = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause()
+        setIsPlaying(false)
+      } else {
+        audioRef.current.play()
+        setIsPlaying(true)
+      }
+    }
+  }
 
   if (isLoading) {
     return (
@@ -102,6 +124,16 @@ export default function Home() {
         preload="none"
         autoPlay
       />
+      
+      {/* Auto-play notification */}
+      {!hasInteracted && !isLoading && (
+        <div className="fixed top-4 right-4 z-50 bg-black/80 text-white px-4 py-2 rounded-lg border border-purple-500">
+          <div className="flex items-center gap-2">
+            <span className="text-purple-400">🎵</span>
+            <span className="text-sm">Click anywhere to start music!</span>
+          </div>
+        </div>
+      )}
       
       <div className="relative size-full">
         <div className="table-cell px-4 py-20 align-middle">
@@ -243,11 +275,16 @@ export default function Home() {
             src="https://r2.fakecrime.bio/tracks/audios/8f77b9b7-0af4-4907-b4ce-b628ae1acafc.mp4" 
             loop 
             preload="none"
-            onPlay={() => console.log('Audio started playing!')}
+            onPlay={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
+            onEnded={() => setIsPlaying(false)}
             onError={(e) => console.log('Audio error:', e)}
           ></audio>
           <div className="rhap_header">
-            <div className="line-clamp-1 break-all">VØJ x Asketa x Daedra - !Sorry</div>
+            <div className="line-clamp-1 break-all flex items-center gap-2">
+              <span>VØJ x Asketa x Daedra - !Sorry</span>
+              {isPlaying && <span className="text-green-400 animate-pulse">▶️</span>}
+            </div>
           </div>
           <div className="rhap_main rhap_stacked">
             <div className="rhap_progress-section">
@@ -264,14 +301,20 @@ export default function Home() {
               <div className="rhap_additional-controls"></div>
               <div className="rhap_main-controls">
                 <button 
-                  aria-label="Play" 
+                  aria-label={isPlaying ? "Pause" : "Play"} 
                   className="rhap_button-clear rhap_main-controls-button rhap_play-pause-button" 
                   type="button"
-                  onClick={handleUserInteraction}
+                  onClick={handlePlayPause}
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" className="size-5 fill-theme drop-shadow-theme duration-300 hover:scale-105 hover:brightness-105">
-                    <path d="M21.4 9.4a3 3 0 0 1 0 5.2l-12.8 7C6.6 22.7 4 21.3 4 19V5c0-2.3 2.5-3.7 4.6-2.6z"></path>
-                  </svg>
+                  {isPlaying ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" className="size-5 fill-theme drop-shadow-theme duration-300 hover:scale-105 hover:brightness-105">
+                      <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"></path>
+                    </svg>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" className="size-5 fill-theme drop-shadow-theme duration-300 hover:scale-105 hover:brightness-105">
+                      <path d="M21.4 9.4a3 3 0 0 1 0 5.2l-12.8 7C6.6 22.7 4 21.3 4 19V5c0-2.3 2.5-3.7 4.6-2.6z"></path>
+                    </svg>
+                  )}
                 </button>
               </div>
               <div className="rhap_volume-controls">
