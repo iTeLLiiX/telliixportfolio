@@ -7,37 +7,35 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Simulate loading
     const timer = setTimeout(() => {
       setIsLoading(false)
     }, 2000)
-
     return () => clearTimeout(timer)
   }, [])
 
   const links = [
-    { title: 'pixiv', platform: 'Pixiv', icon: 'pixiv', color: '#0096FA' },
-    { title: 'litecoin', platform: 'Litecoin', icon: 'litecoin', color: '#FFFFFF' },
-    { title: 'leagueoflegends', platform: 'League of Legends', icon: 'leagueoflegends', color: '#FFFFFF' },
-    { title: 'konect', platform: 'Konect', icon: 'konect', color: '#FFFF3C' },
-    { title: 'gamesense', platform: 'GameSense', icon: 'gamesense', color: '#95B806' },
-    { title: 'flipd', platform: 'Flipd', icon: 'flipd', color: '#FFFFFF' },
-    { title: 'fatality', platform: 'Fatality', icon: 'fatality', color: '#EB055A' },
-    { title: 'exodus', platform: 'Exodus', icon: 'exodus', color: '#0B46F9' },
-    { title: 'evolve', platform: 'Ev0lve', icon: 'evolve', color: '#FFFFFF' },
-    { title: 'esportal', platform: 'Esportal', icon: 'esportal', color: '#FFFFFF' },
-    { title: 'epal', platform: 'E-Pal', icon: 'epal', color: '#7B48FF' },
-    { title: 'deezer', platform: 'Deezer', icon: 'deezer', color: '#A53EFF' },
-    { title: 'csstats', platform: 'CSStats', icon: 'csstats', color: '#3872FC' },
-    { title: 'brawlstars', platform: 'Brawl Stars', icon: 'brawlstars', color: '#FEBE20' },
-    { title: 'billgang', platform: 'Billgang', icon: 'billgang', color: '#FF3F19' },
-    { title: 'onlyfans', platform: 'Onlyfans', icon: 'onlyfans', color: '#00AFF0' },
-    { title: 'nexusmods', platform: 'Nexus Mods', icon: 'nexusmods', color: '#FFFFFF' },
-    { title: 'iniuria', platform: 'Iniuria', icon: 'iniuria', color: '#FF00FF' },
-    { title: 'namemc', platform: 'NameMC', icon: 'namemc', color: '#FFFFFF' },
-    { title: 'melatonin', platform: 'Melatonin', icon: 'melatonin', color: '#9E97DD' },
-    { title: 'moneybot', platform: 'MoneyBot', icon: 'moneybot', color: '#FFFFFF' },
-    { title: 'neverlose', platform: 'Neverlose', icon: 'neverlose', color: '#0095B9' },
+    { title: 'pixiv', platform: 'Pixiv', color: '#0096FA' },
+    { title: 'litecoin', platform: 'Litecoin', color: '#FFFFFF' },
+    { title: 'leagueoflegends', platform: 'League of Legends', color: '#FFFFFF' },
+    { title: 'konect', platform: 'Konect', color: '#FFFF3C' },
+    { title: 'gamesense', platform: 'GameSense', color: '#95B806' },
+    { title: 'flipd', platform: 'Flipd', color: '#FFFFFF' },
+    { title: 'fatality', platform: 'Fatality', color: '#EB055A' },
+    { title: 'exodus', platform: 'Exodus', color: '#0B46F9' },
+    { title: 'evolve', platform: 'Ev0lve', color: '#FFFFFF' },
+    { title: 'esportal', platform: 'Esportal', color: '#FFFFFF' },
+    { title: 'epal', platform: 'E-Pal', color: '#7B48FF' },
+    { title: 'deezer', platform: 'Deezer', color: '#A53EFF' },
+    { title: 'csstats', platform: 'CSStats', color: '#3872FC' },
+    { title: 'brawlstars', platform: 'Brawl Stars', color: '#FEBE20' },
+    { title: 'billgang', platform: 'Billgang', color: '#FF3F19' },
+    { title: 'onlyfans', platform: 'Onlyfans', color: '#00AFF0' },
+    { title: 'nexusmods', platform: 'Nexus Mods', color: '#FFFFFF' },
+    { title: 'iniuria', platform: 'Iniuria', color: '#FF00FF' },
+    { title: 'namemc', platform: 'NameMC', color: '#FFFFFF' },
+    { title: 'melatonin', platform: 'Melatonin', color: '#9E97DD' },
+    { title: 'moneybot', platform: 'MoneyBot', color: '#FFFFFF' },
+    { title: 'neverlose', platform: 'Neverlose', color: '#0095B9' },
   ]
 
   const tags = ['💜', 'WELCOME', 'TO', 'MY', 'PAGE', '💜']
@@ -157,9 +155,20 @@ export default function Home() {
                         <div className="group relative flex items-center justify-center">
                           <div className="flex items-center justify-center size-8">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" 
-                                 style={{ fill: link.color, filter: `drop-shadow(0 0 3.5px ${link.color}75)` }}>
-                              {/* Placeholder for SVG icons - you would need to add the actual SVG paths */}
-                              <rect width="24" height="24" rx="4" />
+                                 className={`fill-[${link.color}] drop-shadow-[0_0_3.5px_${link.color}75]`}>
+                              {link.title === 'pixiv' && (
+                                <path d="M4.935 0A4.924 4.924 0 0 0 0 4.935v14.13A4.924 4.924 0 0 0 4.935 24h14.13A4.924 4.924 0 0 0 24 19.065V4.935A4.924 4.924 0 0 0 19.065 0zm7.81 4.547c2.181 0 4.058.676 5.399 1.847a6.118 6.118 0 0 1 2.116 4.66c.005 1.854-.88 3.476-2.257 4.563-1.375 1.092-3.225 1.697-5.258 1.697-2.314 0-4.46-.842-4.46-.842v2.718c.397.116 1.048.365.635.779H5.79c-.41-.41.19-.65.644-.779V7.666c-1.053.81-1.593 1.51-1.868 2.031.32 1.02-.284.969-.284.969l-1.09-1.73s3.868-4.39 9.553-4.39zm-.19.971c-1.423-.003-3.184.473-4.27 1.244v8.646c.988.487 2.484.832 4.26.832h.01c1.596 0 2.98-.593 3.93-1.533.952-.948 1.486-2.183 1.492-3.683-.005-1.54-.504-2.864-1.42-3.86-.918-.992-2.274-1.645-4.002-1.646Z" />
+                              )}
+                              {link.title === 'litecoin' && (
+                                <path d="m94.72 184.15 12.78-60.84 64.57-44.27 7.57-36.16-64.59 44.46L133.4 0H83.79L57.14 127.19l-27.16 18.7-6.31 34.89 25.97-17.8-13.36 63.76H195.2l8.83-42.59z" />
+                              )}
+                              {link.title === 'leagueoflegends' && (
+                                <path d="m1.91 0 1.21 2.47v19.06L1.92 24h14.72l1.34-4.68H8.33V0ZM12 1.52q-1.37 0-2.65.3v1.75A10 10 0 0 1 12 3.2a9.44 9.44 0 0 1 9.54 9.35 9.2 9.2 0 0 1-2.3 6.08l-.28.96-.6 2.11a11 11 0 0 0 4.9-9.12A11.2 11.2 0 0 0 12 1.52m0 2.67a9 9 0 0 0-2.65.41v13.72h8.82a8.3 8.3 0 0 0 2.36-5.77A8.44 8.44 0 0 0 12 4.19M2.1 7.3a11 11 0 0 0-1.35 5.27c0 1.9.5 3.7 1.36 5.26z" />
+                              )}
+                              {/* Add more SVG paths for other icons */}
+                              {!['pixiv', 'litecoin', 'leagueoflegends'].includes(link.title) && (
+                                <rect width="24" height="24" rx="4" />
+                              )}
                             </svg>
                           </div>
                           <div className="box-radius pointer-events-none absolute -top-11 z-10 flex translate-y-1 scale-90 items-center gap-2 border border-stone-400/10 bg-black px-3 py-1.5 text-white opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100">
